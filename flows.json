@@ -1,0 +1,245 @@
+[
+  {
+      "id": "eb550b06d3cc47d4",
+      "type": "subflow",
+      "name": "Help pages",
+      "info": "This plugin creates a help section in a chatbot. Edit the help pages in **Mission Control** control panel (`http://your-bot/mc`) and connect the sub-flow *\"Help pages\"* to the receiver node in a pass through configuration:\n\n![](https://dashboard.red-bot.io/assets/daa5d5f0-e654-4294-a816-9a8c8cef0077)\n\nThe first output goes to the sender node, and it's triggered when the user sends a text with content `/help`, in that case a list of available help pages is presented to the user with inline buttons. \nFor example: add the `/text` command with the *\"Commands\"* plugin.\n\nThe second output goes to the rest of the bot, if the user is not engaging with the *\"Help pages\"* sub-flow, it's acting transparently.\n\n\n",
+      "category": "RedBot",
+      "in": [
+          {
+              "x": 80,
+              "y": 340,
+              "wires": [
+                  {
+                      "id": "c7a7729a48934d72"
+                  }
+              ]
+          }
+      ],
+      "out": [
+          {
+              "x": 1480,
+              "y": 120,
+              "wires": [
+                  {
+                      "id": "4de1bd2cad7c507b",
+                      "port": 0
+                  },
+                  {
+                      "id": "e85eeb654ccfcebf",
+                      "port": 0
+                  },
+                  {
+                      "id": "d06a9bbafe78e29f",
+                      "port": 0
+                  }
+              ]
+          },
+          {
+              "x": 640,
+              "y": 520,
+              "wires": [
+                  {
+                      "id": "c7a7729a48934d72",
+                      "port": 2
+                  }
+              ]
+          }
+      ],
+      "env": [],
+      "meta": {
+          "module": "help-section",
+          "type": "help-section",
+          "version": "1.0.0",
+          "author": "Guido Bellomo",
+          "desc": "Help pages in RedBot",
+          "license": "MIT"
+      },
+      "color": "#ff6633",
+      "outputLabels": [
+          "To sender",
+          "Passthru"
+      ],
+      "icon": "font-awesome/fa-question-circle"
+  },
+  {
+      "id": "c7a7729a48934d72",
+      "type": "chatbot-rules",
+      "z": "eb550b06d3cc47d4",
+      "name": "",
+      "rules": [
+          {
+              "type": "command",
+              "command": "/help"
+          },
+          {
+              "type": "command",
+              "command": "/helppage"
+          },
+          {
+              "type": "catchAll"
+          }
+      ],
+      "outputs": 3,
+      "x": 220,
+      "y": 340,
+      "wires": [
+          [
+              "e8091df693c2e797"
+          ],
+          [
+              "dc5c7058f69fb1e8"
+          ],
+          []
+      ]
+  },
+  {
+      "id": "dc5c7058f69fb1e8",
+      "type": "function",
+      "z": "eb550b06d3cc47d4",
+      "name": "variables",
+      "func": "if (!msg.payload || !msg.payload.arguments|| msg.payload.arguments.length === 0) {\n    return [null, msg];\n}\n\nreturn [\n    {\n        ...msg,\n        variables: {\n            slug: msg.payload.arguments[0]        \n        }\n    },\n    null\n];",
+      "outputs": 2,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 440,
+      "y": 280,
+      "wires": [
+          [
+              "bc3cedc7b589b03b"
+          ],
+          [
+              "d06a9bbafe78e29f"
+          ]
+      ]
+  },
+  {
+      "id": "bc3cedc7b589b03b",
+      "type": "mc-graphql",
+      "z": "eb550b06d3cc47d4",
+      "name": "Get page",
+      "query": "query($slug: String) {\n  content(slug: $slug) {\n    title,\n    body\n  }\n}",
+      "debug": true,
+      "noerr": 0,
+      "x": 690,
+      "y": 280,
+      "wires": [
+          [
+              "059b565cfe96a16e"
+          ],
+          [
+              "d06a9bbafe78e29f"
+          ],
+          [
+              "d06a9bbafe78e29f"
+          ]
+      ]
+  },
+  {
+      "id": "d06a9bbafe78e29f",
+      "type": "chatbot-message",
+      "z": "eb550b06d3cc47d4",
+      "name": "Error",
+      "message": [
+          {
+              "message": "Something went wrong trying to access the help page"
+          }
+      ],
+      "language": "none",
+      "x": 990,
+      "y": 440,
+      "wires": [
+          []
+      ]
+  },
+  {
+      "id": "e85eeb654ccfcebf",
+      "type": "chatbot-message",
+      "z": "eb550b06d3cc47d4",
+      "name": "Help page",
+      "message": [],
+      "language": "none",
+      "x": 1190,
+      "y": 280,
+      "wires": [
+          []
+      ]
+  },
+  {
+      "id": "059b565cfe96a16e",
+      "type": "template",
+      "z": "eb550b06d3cc47d4",
+      "name": "",
+      "field": "message",
+      "fieldType": "msg",
+      "format": "handlebars",
+      "syntax": "mustache",
+      "template": "**{{{payload.content.title}}}**\n\n{{{payload.content.body}}}",
+      "output": "str",
+      "x": 1000,
+      "y": 280,
+      "wires": [
+          [
+              "e85eeb654ccfcebf"
+          ]
+      ]
+  },
+  {
+      "id": "e8091df693c2e797",
+      "type": "mc-graphql",
+      "z": "eb550b06d3cc47d4",
+      "name": "Get pages",
+      "query": "query {\n  contents(namespace: \"help-pages\") {\n    title,\n    slug\n  }\n}",
+      "debug": false,
+      "noerr": 0,
+      "x": 690,
+      "y": 140,
+      "wires": [
+          [
+              "88895cb8d408196c"
+          ],
+          [
+              "d06a9bbafe78e29f"
+          ],
+          [
+              "d06a9bbafe78e29f"
+          ]
+      ]
+  },
+  {
+      "id": "4de1bd2cad7c507b",
+      "type": "chatbot-inline-buttons",
+      "z": "eb550b06d3cc47d4",
+      "name": "",
+      "buttons": [],
+      "message": "Click one of the following help pages",
+      "trackMessage": false,
+      "outputs": 1,
+      "x": 1210,
+      "y": 120,
+      "wires": [
+          []
+      ]
+  },
+  {
+      "id": "88895cb8d408196c",
+      "type": "function",
+      "z": "eb550b06d3cc47d4",
+      "name": "Create buttons",
+      "func": "return {\n    ...msg,\n    buttons: msg.payload.contents.map(({ title, slug }) => ([\n        {\n            type: 'postback',\n            value: `/helppage ${slug}`,\n            label: title\n        },\n        {\n            type: 'newline'\n        }\n    ])).flat()\n};",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 1020,
+      "y": 120,
+      "wires": [
+          [
+              "4de1bd2cad7c507b"
+          ]
+      ]
+  }
+]
