@@ -85,7 +85,7 @@
       "y": 340,
       "wires": [
           [
-              "e8091df693c2e797"
+              "d83c4fdd71c445a6"
           ],
           [
               "dc5c7058f69fb1e8"
@@ -191,7 +191,7 @@
       "type": "mc-graphql",
       "z": "eb550b06d3cc47d4",
       "name": "Get pages",
-      "query": "query {\n  contents(namespace: \"help-pages\") {\n    title,\n    slug\n  }\n}",
+      "query": "query ($chatbotId: String!) {\n  contents(namespace: \"help-pages\", chatbotId: $chatbotId) {\n    title,\n    slug\n  }\n}",
       "debug": false,
       "noerr": 0,
       "x": 690,
@@ -239,6 +239,25 @@
       "wires": [
           [
               "4de1bd2cad7c507b"
+          ]
+      ]
+  },
+  {
+      "id": "d83c4fdd71c445a6",
+      "type": "function",
+      "z": "eb550b06d3cc47d4",
+      "name": "Set chatbotId",
+      "func": "const chatbotId = msg.originalMessage.chatbotId;\nreturn {\n    ...msg,\n    variables: {\n        chatbotId\n    }\n};",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": [],
+      "x": 460,
+      "y": 140,
+      "wires": [
+          [
+              "e8091df693c2e797"
           ]
       ]
   }
