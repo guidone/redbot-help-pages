@@ -50,7 +50,7 @@
       "meta": {
           "module": "help-section",
           "type": "help-section",
-          "version": "1.0.0",
+          "version": "1.0.1",
           "author": "Guido Bellomo",
           "desc": "Help pages in RedBot",
           "license": "MIT"
@@ -191,7 +191,7 @@
       "type": "mc-graphql",
       "z": "eb550b06d3cc47d4",
       "name": "Get pages",
-      "query": "query ($chatbotId: String!) {\n  contents(namespace: \"help-pages\", chatbotId: $chatbotId) {\n    title,\n    slug\n  }\n}",
+      "query": "query ($chatbotId: String!) {\n  contents(\n    namespace: \"help-pages\", \n    chatbotId: $chatbotId,\n    order: \"order\"\n  ) {\n    title,\n    slug\n  }\n}",
       "debug": false,
       "noerr": 0,
       "x": 690,
