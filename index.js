@@ -1,6 +1,3 @@
-import React, { Fragment } from 'react';
-import _ from 'lodash';
-
 import { plug } from 'code-plug';
 
 import { Content } from '../../src/components';
@@ -14,10 +11,7 @@ plug(
     id: 'help-pages',
     label: 'Help pages',
     url: '/help',
-    icon: 'file-text',
-    options: [
-      { label: 'Posts', url: '/help', id: 'help-pages' }
-    ]
+    icon: 'file-text'
   }
 );
 plug('pages', Contents, {
@@ -25,6 +19,7 @@ plug('pages', Contents, {
   title: 'Help pages',
   id: 'help-pages',
   namespace: 'help-pages',
+  sortable: true,
   labels: {
     createContent: 'Create help page',
     emptyContent: 'No help pages',
