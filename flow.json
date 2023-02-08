@@ -3,8 +3,8 @@
       "id": "eb550b06d3cc47d4",
       "type": "subflow",
       "name": "Help pages",
-      "info": "This plugin creates a help section in a chatbot. Edit the help pages in **Mission Control** control panel (`http://your-bot/mc`) and connect the sub-flow *\"Help pages\"* to the receiver node in a pass through configuration:\n\n![](https://dashboard.red-bot.io/assets/daa5d5f0-e654-4294-a816-9a8c8cef0077)\n\nThe first output goes to the sender node, and it's triggered when the user sends a text with content `/help`, in that case a list of available help pages is presented to the user with inline buttons. \nFor example: add the `/text` command with the *\"Commands\"* plugin.\n\nThe second output goes to the rest of the bot, if the user is not engaging with the *\"Help pages\"* sub-flow, it's acting transparently.\n\n\n",
-      "category": "RedBot",
+      "info": "This plugin creates a help section in the chatbot answering to a simple command `/help`. \n\nImport the **Help pages** sub-flow in **Node-RED**.\n\nEdit the help pages in **Mission Control** control panel (`http://your-bot/mc`) and connect the sub-flow *\"Help pages\"* to the receiver node in a pass through configuration:\n\n![](https://dashboard.red-bot.io/assets/daa5d5f0-e654-4294-a816-9a8c8cef0077)\n\nThe first output goes to the sender node, and it's triggered when the user sends a text with content `/help`, in that case a list of available help pages is presented to the user with inline buttons. \n\nEasily set up the `/help` command with the **Telegram menu** node or the **Messenger menu** node.\n\nThe second output goes to the rest of the bot, if the user is not engaging with the *\"Help pages\"* sub-flow, it's acting transparently.\n\n**Changelog**\n- _1.0.2_ Fixed palette category\n- _1.0.1_ Sortable pages\n- _1.0.0_ Initial version\n",
+      "category": "RedBot Flows",
       "in": [
           {
               "x": 80,
@@ -50,7 +50,7 @@
       "meta": {
           "module": "help-section",
           "type": "help-section",
-          "version": "1.0.1",
+          "version": "1.0.2",
           "author": "Guido Bellomo",
           "desc": "Help pages in RedBot",
           "license": "MIT"

@@ -1,7 +1,7 @@
 /*!
  * Name: redbot-help-pages
  * Id: redbot-help-pages
- * Version: 1.0.0
+ * Version: 1.0.2
  * Description:
  * Author: undefined (undefined)
  * Repository: undefined
